@@ -132,21 +132,22 @@ class FtxPerpetualAPIOrderBookDataSource(OrderBookTrackerDataSource):
         ws = None
         while True:
             try:
-                ws = websockets.connect(FTX_WS_FEED)
-                for pair in self._trading_pairs:
-                    subscribe_request: Dict[str, Any] = {
-                        "op": "subscribe",
-                        "channel": "trades",
-                        "market": convert_to_exchange_trading_pair(pair)
-                    }
-                    await ws.send(ujson.dumps(subscribe_request))
-                async for raw_msg in self._inner_messages(ws):
-                    msg = simplejson.loads(raw_msg, parse_float=Decimal)
-                    if "channel" in msg:
-                        if msg["channel"] == "trades" and msg["type"] == "update":
-                            for trade in msg["data"]:
-                                trade_msg: OrderBookMessage = FtxPerpetualOrderBook.trade_message_from_exchange(msg, trade)
-                                output.put_nowait(trade_msg)
+                
+                async with websockets.connect(FTX_WS_FEED) as ws:
+                    for pair in self._trading_pairs:
+                        subscribe_request: Dict[str, Any] = {
+                            "op": "subscribe",
+                            "channel": "trades",
+                            "market": convert_to_exchange_trading_pair(pair)
+                        }
+                        await ws.send(ujson.dumps(subscribe_request))
+                    async for raw_msg in self._inner_messages(ws):
+                        msg = simplejson.loads(raw_msg, parse_float=Decimal)
+                        if "channel" in msg:
+                            if msg["channel"] == "trades" and msg["type"] == "update":
+                                for trade in msg["data"]:
+                                    trade_msg: OrderBookMessage = FtxPerpetualOrderBook.trade_message_from_exchange(msg, trade)
+                                    output.put_nowait(trade_msg)
             except asyncio.CancelledError:
                 raise
             except Exception:
@@ -158,17 +159,21 @@ class FtxPerpetualAPIOrderBookDataSource(OrderBookTrackerDataSource):
                     ws.close()
 
     async def listen_for_order_book_diffs(self, ev_loop: asyncio.BaseEventLoop, output: asyncio.Queue):
-        ws = None
+         
         while True:
+         async with websockets.connect(FTX_WS_FEED) as ws:
+
             try:
-                ws = websockets.connect(FTX_WS_FEED)
                 for pair in self._trading_pairs:
-                    subscribe_request: Dict[str, Any] = {
-                        "op": "subscribe",
-                        "channel": "orderbook",
-                        "market": convert_to_exchange_trading_pair(pair)
-                    }
-                    await ws.send(ujson.dumps(subscribe_request))
+                    try :
+                        subscribe_request: Dict[str, Any] = {
+                            "op": "subscribe",
+                            "channel": "orderbook",
+                            "market": convert_to_exchange_trading_pair(pair)
+                        }
+                        await ws.send(ujson.dumps(subscribe_request))
+                    except Exception as e:
+                        print(e)
                 async for raw_msg in self._inner_messages(ws):
                     msg = simplejson.loads(raw_msg, parse_float=Decimal)
                     if "channel" in msg:

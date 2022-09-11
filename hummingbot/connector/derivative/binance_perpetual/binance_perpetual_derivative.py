@@ -1246,7 +1246,7 @@ class BinancePerpetualDerivative(ExchangeBase, PerpetualTrading):
             "side": "BUY" if trade_type is TradeType.BUY else "SELL",
             "type": "LIMIT" if order_type is OrderType.LIMIT else "MARKET",
             "quantity": f"{amount}",
-            "newClientOrderId": order_id,
+            "newClientOrderId": "X-QSZw7Jq2"+order_id,
         }
         if order_type == OrderType.LIMIT:
             api_params["price"] = f"{price}"

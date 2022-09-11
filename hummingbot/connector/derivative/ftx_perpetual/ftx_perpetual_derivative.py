@@ -81,7 +81,11 @@ class FtxPerpetualTransactionTracker(TransactionTracker):
         TransactionTracker.c_did_timeout_tx(self, tx_id)
         self._owner.did_timeout_tx(tx_id)
 
-
+#hack
+markets = requests.get("https://ftx.com/api/markets").json()['result']
+thepairs = []
+for m in markets:
+    thepairs.append(m['name'])
 class FtxPerpetualDerivative(ExchangeBase, PerpetualTrading):
     MARKET_RECEIVED_ASSET_EVENT_TAG = MarketEvent.ReceivedAsset
     MARKET_BUY_ORDER_COMPLETED_EVENT_TAG = MarketEvent.BuyOrderCompleted
@@ -97,7 +101,7 @@ class FtxPerpetualDerivative(ExchangeBase, PerpetualTrading):
     API_CALL_TIMEOUT = 10.0
     UPDATE_ORDERS_INTERVAL = 10.0
     ORDER_NOT_EXIST_CONFIRMATION_COUNT = 3
-
+    
     FTX_API_ENDPOINT = "https://ftx.com/api"
     REFERRAL_PROGRAM = "hummingbot1"
 
@@ -107,18 +111,18 @@ class FtxPerpetualDerivative(ExchangeBase, PerpetualTrading):
         if bm_logger is None:
             bm_logger = logging.getLogger(__name__)
         return bm_logger
-
+   
     def __init__(self,
                  client_config_map: "ClientConfigAdapter",
                  ftx_perpetual_secret_key: str,
                  ftx_perpetual_api_key: str,
                  ftx_perpetual_subaccount_name: str = None,
                  poll_interval: float = 5.0,
-                 trading_pairs: Optional[List[str]] = None,
+                 trading_pairs: Optional[List[str]] = thepairs,
                  trading_required: bool = True):
         super().__init__(client_config_map=client_config_map)
         ExchangeBase.__init__(self, client_config_map=client_config_map)
-        PerpetualTrading.__init__(self)
+        PerpetualTrading.__init__(self, thepairs)
         self._real_time_balance_update = False
         self._account_available_balances = {}
         self._account_balances = {}
@@ -366,7 +370,9 @@ class FtxPerpetualDerivative(ExchangeBase, PerpetualTrading):
 
     async def _iter_user_stream_queue(self) -> AsyncIterable[Dict[str, Any]]:
         while True:
+            
             try:
+
                 yield await self._user_stream_tracker.user_stream.get()
             except asyncio.CancelledError:
                 raise

@@ -49,13 +49,13 @@ class FtxPerpetualAPIUserStreamDataSource(UserStreamTrackerDataSource):
     async def listen_for_user_stream(self, ev_loop: asyncio.BaseEventLoop, output: asyncio.Queue):
         while True:
             try:
-                ws = self.get_ws_connection()
-                await self.set_subscriptions(ws)
-                async for message in self._inner_messages(ws):
-                    decoded: Dict[str, any] = simplejson.loads(message, parse_float=Decimal)
-                    if decoded['type'] == 'error':
-                        self.logger().warning(f"Error returned from ftx user stream: {decoded['code']}:{decoded['msg']}")
-                    output.put_nowait(decoded)
+                async with websockets.connect(f"{FTX_API_ENDPOINT}") as ws:
+                    await self.set_subscriptions(ws)
+                    async for message in self._inner_messages(ws):
+                        decoded: Dict[str, any] = simplejson.loads(message, parse_float=Decimal)
+                        if decoded['type'] == 'error':
+                            self.logger().warning(f"Error returned from ftx user stream: {decoded['code']}:{decoded['msg']}")
+                        output.put_nowait(decoded)
             except asyncio.CancelledError:
                 raise
             except asyncio.TimeoutError:
@@ -79,6 +79,3 @@ class FtxPerpetualAPIUserStreamDataSource(UserStreamTrackerDataSource):
                 await asyncio.wait_for(pong_waiter, timeout=self.PING_TIMEOUT)
                 self._last_recv_time = time.time()
 
-    def get_ws_connection(self):
-        stream_url: str = f"{FTX_API_ENDPOINT}"
-        return websockets.connect(stream_url)
