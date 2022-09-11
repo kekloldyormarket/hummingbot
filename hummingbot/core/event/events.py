@@ -118,7 +118,13 @@ class TokenApprovalCancelledEvent:
     connector: str
     token_symbol: str
 
-
+@dataclass
+class FundingInfo:
+    trading_pair: str
+    index_price: Decimal
+    mark_price: Decimal
+    next_funding_utc_timestamp: float
+    rate: Decimal
 @dataclass
 class FundingPaymentCompletedEvent:
     timestamp: float
