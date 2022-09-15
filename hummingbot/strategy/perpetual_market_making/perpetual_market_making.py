@@ -88,8 +88,8 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
         self._market_info = market_info
         self._leverage = leverage
         self._position_mode = PositionMode.HEDGE if position_mode == "Hedge" else PositionMode.ONEWAY
-        self._bid_spread = bid_spread / 3
-        self._ask_spread = ask_spread / 3
+        self._bid_spread = bid_spread
+        self._ask_spread = ask_spread
         self._minimum_spread = minimum_spread
         self._order_amount = order_amount
         self._long_profit_taking_spread = long_profit_taking_spread
@@ -98,7 +98,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
         self._order_levels = order_levels
         self._buy_levels = order_levels
         self._sell_levels = order_levels
-        self._order_level_spread = order_level_spread / 3
+        self._order_level_spread = order_level_spread
         self._order_level_amount = order_level_amount
         self._order_refresh_time = order_refresh_time
         self._order_refresh_tolerance_pct = order_refresh_tolerance_pct
