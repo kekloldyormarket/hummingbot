@@ -540,7 +540,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                 self._ts_peak_ask_price = market.get_price(self.trading_pair, False)
                 self._ts_peak_bid_price = market.get_price(self.trading_pair, True)
                 #self.manage_positions(session_positions)
-             else:
+            else:
                 self._order_refresh_time = 2
                 self._exit_orders = dict()  # Empty list of exit order at this point to reduce size
                 proposal = None
