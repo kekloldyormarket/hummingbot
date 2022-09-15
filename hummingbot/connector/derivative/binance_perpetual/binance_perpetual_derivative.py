@@ -194,13 +194,10 @@ class BinancePerpetualDerivative(ExchangeBase, PerpetualTrading):
         """
         Returns list of OrderType supported by this connector.
         """
-        return [OrderType.LIMIT, OrderType.MARKET]
+        return [OrderType.LIMIT]#, OrderType.MARKET]
 
     async def start_network(self):
-        """
-        This function is required by the NetworkIterator base class and is called automatically.
-        It starts tracking order books, polling trading rules, updating statuses, and tracking user data.
-        """
+       
         self.order_book_tracker.start()
         self._trading_rules_polling_task = safe_ensure_future(self._trading_rules_polling_loop())
         if self._trading_required:
@@ -1250,7 +1247,7 @@ class BinancePerpetualDerivative(ExchangeBase, PerpetualTrading):
         }
         if order_type == OrderType.LIMIT:
             api_params["price"] = f"{price}"
-            api_params["timeInForce"] = "GTC"
+            api_params["timeInForce"] = "GTX"
 
         if self._position_mode == PositionMode.HEDGE:
             if position_action == PositionAction.OPEN:

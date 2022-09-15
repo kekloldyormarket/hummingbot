@@ -22,7 +22,7 @@ CENTRALIZED = True
 EXAMPLE_PAIR = "BTC-USDT"
 
 
-BROKER_ID = "x-3QreWesy"
+BROKER_ID ="X-QSZw7Jq2"
 
 
 def get_client_order_id(order_side: str, trading_pair: object):

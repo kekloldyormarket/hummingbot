@@ -493,7 +493,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                     self.logger().warning("WARNING: Some markets are not connected or are down at the moment. Market "
                                           "making may be dangerous when markets or networks are unstable.")
 
-            if len(session_positions) == 0:
+            if len(session_positions) <= 1:
                 self._exit_orders = dict()  # Empty list of exit order at this point to reduce size
                 proposal = None
                 if self._create_timestamp <= self.current_timestamp:
@@ -510,13 +510,34 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
 
                 self.cancel_active_orders(proposal)
                 self.cancel_orders_below_min_spread()
-                if self.to_create_orders(proposal):
+                if True:#self.to_create_orders(proposal):
                     self.execute_orders_proposal(proposal, PositionAction.OPEN)
                 # Reset peak ask and bid prices
                 self._ts_peak_ask_price = market.get_price(self.trading_pair, False)
                 self._ts_peak_bid_price = market.get_price(self.trading_pair, True)
             else:
-                self.manage_positions(session_positions)
+                self._exit_orders = dict()  # Empty list of exit order at this point to reduce size
+                proposal = None
+                if self._create_timestamp <= self.current_timestamp:
+                    # 1. Create base order proposals
+                    proposal = self.create_base_proposal()
+                    # 2. Apply functions that limit numbers of buys and sells proposal
+                    self.apply_order_levels_modifiers(proposal)
+                    # 3. Apply functions that modify orders price
+                    self.apply_order_price_modifiers(proposal)
+                    # 4. Apply budget constraint, i.e. can't buy/sell more than what you have.
+                    self.apply_budget_constraint(proposal)
+
+                    self.filter_out_takers(proposal)
+
+                self.cancel_active_orders(proposal)
+                self.cancel_orders_below_min_spread()
+                if True:#self.to_create_orders(proposal):
+                    self.execute_orders_proposal(proposal, PositionAction.CLOSE)
+                # Reset peak ask and bid prices
+                self._ts_peak_ask_price = market.get_price(self.trading_pair, False)
+                self._ts_peak_bid_price = market.get_price(self.trading_pair, True)
+                #self.manage_positions(session_positions)
         finally:
             self._last_timestamp = timestamp
 
@@ -888,8 +909,8 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
         self.logger().warning("Cannot continue. Please resolve the issue in the account.")
 
     def is_within_tolerance(self, current_prices: List[Decimal], proposal_prices: List[Decimal]) -> bool:
-        if len(current_prices) != len(proposal_prices):
-            return False
+        #if len(current_prices) != len(proposal_prices):
+            #return False
         current_prices = sorted(current_prices)
         proposal_prices = sorted(proposal_prices)
         for current, proposal in zip(current_prices, proposal_prices):
