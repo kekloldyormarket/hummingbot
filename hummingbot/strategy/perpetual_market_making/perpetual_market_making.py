@@ -530,9 +530,9 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                 self.cancel_active_orders(proposal)
                 self.cancel_orders_below_min_spread()
                 if session_positions[0].amount < 0:
-                    prososal.sells = []
+                    proposal.sells = []
                 else:
-                    prososal.buys = []
+                    proposal.buys = []
                 if True:#self.to_create_orders(proposal):
                     
                     self.execute_orders_proposal(proposal, PositionAction.CLOSE)
