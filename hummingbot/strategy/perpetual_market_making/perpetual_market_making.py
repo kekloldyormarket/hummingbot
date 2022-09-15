@@ -919,7 +919,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
            # return
 
         to_defer_canceling = False
-        if len(self.active_orders) == 0:
+        if len(self.active_orders) == 0: #hmm
            # return
         if proposal is not None and self._order_refresh_tolerance_pct >= 0:
 
