@@ -955,7 +955,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
     def to_create_orders(self, proposal: Proposal) -> bool:
         return (self._create_timestamp < self.current_timestamp and
                 proposal is not None and
-                len(self.active_orders) == 0)
+                len(self.active_orders) <= self._order_levels * 2)
 
     def execute_orders_proposal(self, proposal: Proposal, position_action: PositionAction):
         orders_created = False
