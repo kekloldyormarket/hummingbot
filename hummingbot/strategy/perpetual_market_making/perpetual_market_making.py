@@ -915,12 +915,12 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
 
     # Return value: whether order cancelation is deferred.
     def cancel_active_orders(self, proposal: Proposal):
-        #if self._cancel_timestamp > self.current_timestamp:
-           # return
+        if self._cancel_timestamp > self.current_timestamp:
+            return
 
         to_defer_canceling = False
-        #if len(self.active_orders) == 0: #hmm
-           # return
+        if len(self.active_orders) == 0:
+            return
         if proposal is not None and self._order_refresh_tolerance_pct >= 0:
 
             active_buy_prices = [Decimal(str(o.price)) for o in self.active_orders if o.is_buy]
@@ -931,7 +931,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                     self.is_within_tolerance(active_sell_prices, proposal_sells):
                 to_defer_canceling = True
 
-        if True:#not to_defer_canceling:
+        if not to_defer_canceling:
             for order in self.active_orders:
                 self.cancel_order(self._market_info, order.client_order_id)
         else:
