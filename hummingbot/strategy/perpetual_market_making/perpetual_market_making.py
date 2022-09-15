@@ -510,7 +510,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                 # Reset peak ask and bid prices
                 self._ts_peak_ask_price = market.get_price(self.trading_pair, False)
                 self._ts_peak_bid_price = market.get_price(self.trading_pair, True)
-            elif len(session_positions) == 0:
+            elif len(session_positions) == 1:
                 
                 self._order_refresh_time = 60
                 self._exit_orders = dict()  # Empty list of exit order at this point to reduce size
