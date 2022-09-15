@@ -916,11 +916,11 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
     # Return value: whether order cancelation is deferred.
     def cancel_active_orders(self, proposal: Proposal):
         if self._cancel_timestamp > self.current_timestamp:
-            return
+            #return
 
         to_defer_canceling = False
         if len(self.active_orders) == 0:
-            return
+           #return
         if proposal is not None and self._order_refresh_tolerance_pct >= 0:
 
             active_buy_prices = [Decimal(str(o.price)) for o in self.active_orders if o.is_buy]
