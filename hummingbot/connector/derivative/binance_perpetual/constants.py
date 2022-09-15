@@ -8,7 +8,7 @@ MAX_ORDER_ID_LEN = 30
 DOMAIN = EXCHANGE_NAME
 TESTNET_DOMAIN = "binance_perpetual_testnet"
 
-PERPETUAL_BASE_URL = "https://fapi.binance.com/fapi/"
+PERPETUAL_BASE_URL = "https://binance-fapi.mltech.ai/fapi/"
 TESTNET_BASE_URL = "https://testnet.binancefuture.com/fapi/"
 
 PERPETUAL_WS_URL = "wss://fstream.binance.com/"

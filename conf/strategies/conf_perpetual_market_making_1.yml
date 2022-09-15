@@ -6,7 +6,7 @@ template_version: 6
 strategy: perpetual_market_making
 
 # derivative and token parameters.
-derivative: binance_perpetual_testnet
+derivative: binance_perpetual
 
 # Token trading pair for the exchange, e.g. BTC-USDT
 market: BTC-USDT
