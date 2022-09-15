@@ -21,13 +21,13 @@ position_mode: Hedge
 # Spread of 1 = 1% away from mid price at that time.
 # Example if mid price is 100 and bid_spread is 1.
 # Your bid is placed at 99.
-bid_spread: 0.07
+bid_spread: 0.09
 
 # How far away from mid price to place the ask order.
 # Spread of 1 = 1% away from mid price at that time.
 # Example if mid price is 100 and ask_spread is 1.
 # Your bid is placed at 101.
-ask_spread: 0.07
+ask_spread: 0.09
 
 # Minimum Spread
 # How far away from the mid price to cancel active orders
@@ -72,7 +72,7 @@ order_levels: 3
 order_level_amount: 0.01
 
 # Order price space between orders (if order_levels > 1).
-order_level_spread: 0.07
+order_level_spread: 0.09
 
 # How long to wait before placing the next order in case your order gets filled.
 filled_order_delay: 60.0
