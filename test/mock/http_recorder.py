@@ -136,7 +136,7 @@ class HttpRecorder(HttpPlayerBase):
     with recorder.patch_aiohttp_client:
       # all aiohttp conversations inside this block will be recorded to test.db
       async with aiohttp.ClientSession() as client:
-        async with client.get("https://api.binance.com/api/v3/time") as resp:
+        async with client.get("https://binance-sapi.mltech.ai/api/v3/time") as resp:
           data = await resp.json()      # the request and response are recorded to test.db
           ...
     """
@@ -227,7 +227,7 @@ class HttpPlayer(HttpPlayerBase):
     with recorder.patch_aiohttp_client:
       # all aiohttp responses within this block will be replays from past records in test.db.
       async with aiohttp.ClientSession() as client:
-        async with client.get("https://api.binance.com/api/v3/time") as resp:
+        async with client.get("https://binance-sapi.mltech.ai/api/v3/time") as resp:
           data = await resp.json()      # the data returned will be the recorded response
           ...
     """

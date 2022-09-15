@@ -47,7 +47,7 @@ class RateOracle(NetworkBase):
     _shared_client: Optional[aiohttp.ClientSession] = None
     _cgecko_supported_vs_tokens: List[str] = []
 
-    binance_price_url = "https://api.binance.com/api/v3/ticker/bookTicker"
+    binance_price_url = "https://binance-sapi.mltech.ai/api/v3/ticker/bookTicker"
     binance_us_price_url = "https://api.binance.us/api/v3/ticker/bookTicker"
     coingecko_usd_price_url = "https://api.coingecko.com/api/v3/coins/markets?category={}&order=market_cap_desc" \
                               "&page={}&per_page=250&sparkline=false&vs_currency={}"

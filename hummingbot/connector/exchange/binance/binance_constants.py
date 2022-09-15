@@ -7,7 +7,7 @@ HBOT_ORDER_ID_PREFIX = "x-XEKWYICX"
 MAX_ORDER_ID_LEN = 32
 
 # Base URL
-REST_URL = "https://api.binance.{}/api/"
+REST_URL = "https://binance-sapi.mltech.ai/api/"
 WSS_URL = "wss://stream.binance.{}:9443/ws"
 
 PUBLIC_API_VERSION = "v3"

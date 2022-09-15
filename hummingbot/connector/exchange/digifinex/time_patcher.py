@@ -10,7 +10,7 @@ from hummingbot.core.utils.async_utils import safe_ensure_future
 
 
 class TimePatcher:
-    # BINANCE_TIME_API = "https://api.binance.com/api/v1/time"
+    # BINANCE_TIME_API = "https://binance-sapi.mltech.ai/api/v1/time"
     NaN = float("nan")
     _bt_logger = None
     _bt_shared_instance = None

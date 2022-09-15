@@ -123,7 +123,7 @@ class BuyDipExample(ScriptStrategyBase):
         :return: A list of daily close
         """
 
-        url = "https://api.binance.com/api/v3/klines"
+        url = "https://binance-sapi.mltech.ai/api/v3/klines"
         params = {"symbol": trading_pair.replace("-", ""),
                   "interval": "1d"}
         records = requests.get(url=url, params=params).json()

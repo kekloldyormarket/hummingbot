@@ -595,23 +595,23 @@ class BitmartExchangeTests(AbstractExchangeConnectorTests.ExchangeConnectorTests
         pass
 
     def test_time_synchronizer_related_request_error_detection(self):
-        exception = IOError("Error executing request POST https://api.binance.com/api/v3/order. HTTP status is 400. "
+        exception = IOError("Error executing request POST https://binance-sapi.mltech.ai/api/v3/order. HTTP status is 400. "
                             'Error: {"code":30007,"msg":"Header X-BM-TIMESTAMP range. Within a minute"}')
         self.assertTrue(self.exchange._is_request_exception_related_to_time_synchronizer(exception))
 
-        exception = IOError("Error executing request POST https://api.binance.com/api/v3/order. HTTP status is 400. "
+        exception = IOError("Error executing request POST https://binance-sapi.mltech.ai/api/v3/order. HTTP status is 400. "
                             'Error: {"code":30008,"msg":"Header X-BM-TIMESTAMP invalid format"}')
         self.assertTrue(self.exchange._is_request_exception_related_to_time_synchronizer(exception))
 
-        exception = IOError("Error executing request POST https://api.binance.com/api/v3/order. HTTP status is 400. "
+        exception = IOError("Error executing request POST https://binance-sapi.mltech.ai/api/v3/order. HTTP status is 400. "
                             'Error: {"code":30000,"msg":"Header X-BM-TIMESTAMP range. Within a minute"}')
         self.assertFalse(self.exchange._is_request_exception_related_to_time_synchronizer(exception))
 
-        exception = IOError("Error executing request POST https://api.binance.com/api/v3/order. HTTP status is 400. "
+        exception = IOError("Error executing request POST https://binance-sapi.mltech.ai/api/v3/order. HTTP status is 400. "
                             'Error: {"code":30007,"msg":"Other message"}')
         self.assertFalse(self.exchange._is_request_exception_related_to_time_synchronizer(exception))
 
-        exception = IOError("Error executing request POST https://api.binance.com/api/v3/order. HTTP status is 400. "
+        exception = IOError("Error executing request POST https://binance-sapi.mltech.ai/api/v3/order. HTTP status is 400. "
                             'Error: {"code":30008,"msg":"Other message"}')
         self.assertFalse(self.exchange._is_request_exception_related_to_time_synchronizer(exception))
 
