@@ -992,6 +992,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
 
     def execute_orders_proposal(self, proposal: Proposal, position_action: PositionAction):
         orders_created = False
+        session_positions = [s for s in self.active_positions.values() if s.trading_pair == self.trading_pair]
 
         if len(proposal.buys) > 0:
             if len(session_positions) == 1:
