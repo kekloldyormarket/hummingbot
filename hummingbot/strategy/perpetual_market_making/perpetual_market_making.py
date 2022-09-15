@@ -488,7 +488,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                                           "making may be dangerous when markets or networks are unstable.")
 
             if len(session_positions) <= 1:
-                self._order_refresh_time = 30
+                self._order_refresh_time = 60
                 self._exit_orders = dict()  # Empty list of exit order at this point to reduce size
                 proposal = None
                 if self._create_timestamp <= self.current_timestamp:
@@ -528,9 +528,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
 
                 self.cancel_active_orders(proposal)
                 self.cancel_orders_below_min_spread()
-                
                 if True:#self.to_create_orders(proposal):
-                    
                     self.execute_orders_proposal(proposal, PositionAction.CLOSE)
                 # Reset peak ask and bid prices
                 self._ts_peak_ask_price = market.get_price(self.trading_pair, False)
@@ -961,12 +959,8 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
 
     def execute_orders_proposal(self, proposal: Proposal, position_action: PositionAction):
         orders_created = False
-        session_positions = [s for s in self.active_positions.values() if s.trading_pair == self.trading_pair]
 
         if len(proposal.buys) > 0:
-            if len(session_positions) == 1:
-                if session_positions[0].amount > 0:
-                    return
             if position_action == PositionAction.CLOSE:
                 if self.current_timestamp < self._next_buy_exit_order_timestamp:
                     return
@@ -992,13 +986,6 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                     self._exit_orders[bid_order_id] = self.current_timestamp
                 orders_created = True
         if len(proposal.sells) > 0:
-            if len(session_positions) == 1:
-                if session_positions[0].amount < 0:
-                    return
-               # if session_positions[0].amount < 0:
-                ##    proposal.sells = []
-               # else:
-               #     proposal.buys = []
             if position_action == PositionAction.CLOSE:
                 if self.current_timestamp < self._next_sell_exit_order_timestamp:
                     return
