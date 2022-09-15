@@ -529,10 +529,11 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
 
                 self.cancel_active_orders(proposal)
                 self.cancel_orders_below_min_spread()
-                if session_positions[0].amount < 0:
-                    proposal.sells = []
-                else:
-                    proposal.buys = []
+                
+               # if session_positions[0].amount < 0:
+                ##    proposal.sells = []
+               # else:
+               #     proposal.buys = []
                 if True:#self.to_create_orders(proposal):
                     
                     self.execute_orders_proposal(proposal, PositionAction.CLOSE)
@@ -993,6 +994,9 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
         orders_created = False
 
         if len(proposal.buys) > 0:
+            if len(session_positions) == 1:
+                if session_positions[0].amount > 0:
+                    return
             if position_action == PositionAction.CLOSE:
                 if self.current_timestamp < self._next_buy_exit_order_timestamp:
                     return
@@ -1018,6 +1022,13 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                     self._exit_orders[bid_order_id] = self.current_timestamp
                 orders_created = True
         if len(proposal.sells) > 0:
+            if len(session_positions) == 1:
+                if session_positions[0].amount < 0:
+                    return
+               # if session_positions[0].amount < 0:
+                ##    proposal.sells = []
+               # else:
+               #     proposal.buys = []
             if position_action == PositionAction.CLOSE:
                 if self.current_timestamp < self._next_sell_exit_order_timestamp:
                     return
