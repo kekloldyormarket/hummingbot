@@ -985,8 +985,8 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                     if position_action == PositionAction.CLOSE:
                         self._exit_orders[bid_order_id] = self.current_timestamp
                     orders_created = True
-            except:
-                abc=123
+        except:
+            abc=123
         try:
             if len(proposal.sells) > 0:
                 if position_action == PositionAction.CLOSE:
@@ -1013,8 +1013,8 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                     if position_action == PositionAction.CLOSE:
                         self._exit_orders[ask_order_id] = self.current_timestamp
                     orders_created = True
-            except:
-                abc=123
+        except:
+            abc=123
         if orders_created:
             self.set_timers()
 
