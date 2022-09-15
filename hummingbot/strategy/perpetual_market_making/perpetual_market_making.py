@@ -488,6 +488,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                                           "making may be dangerous when markets or networks are unstable.")
 
             if len(session_positions) == 0:
+                self._order_refresh_time = 30
                 self._exit_orders = dict()  # Empty list of exit order at this point to reduce size
                 proposal = None
                 if self._create_timestamp <= self.current_timestamp:
@@ -511,6 +512,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                 self._ts_peak_bid_price = market.get_price(self.trading_pair, True)
             elif len(session_positions) == 0:
                 
+                self._order_refresh_time = 60
                 self._exit_orders = dict()  # Empty list of exit order at this point to reduce size
                 proposal = None
                 if self._create_timestamp <= self.current_timestamp:
@@ -539,7 +541,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                 self._ts_peak_bid_price = market.get_price(self.trading_pair, True)
                 #self.manage_positions(session_positions)
              else:
-                
+                self._order_refresh_time = 2
                 self._exit_orders = dict()  # Empty list of exit order at this point to reduce size
                 proposal = None
                 if self._create_timestamp <= self.current_timestamp:
