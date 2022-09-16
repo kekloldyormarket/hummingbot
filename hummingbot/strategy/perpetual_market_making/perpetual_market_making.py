@@ -97,7 +97,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
         self._stop_loss_spread = stop_loss_spread
         self._order_levels = order_levels
         self._buy_levels = order_levels
-        self._sell_levels = order_levels
+        self._sell_levels = 5#order_levels
         self._order_level_spread = 0.005#order_level_spread
         self._order_level_amount = order_level_amount
         self._order_refresh_time = order_refresh_time
