@@ -122,7 +122,7 @@ class BudgetChecker:
     def _get_available_balances(self, order_candidate: OrderCandidate) -> Dict[str, Decimal]:
         available_balances = {}
         balance_fn = (
-            self._exchange.get_available_balance('USDT')
+            self._exchange.get_available_balance
             if not order_candidate.from_total_balances
             else self._exchange.get_balance
         )
@@ -142,7 +142,7 @@ class BudgetChecker:
             available_balances[token] = (
                 balance_fn(token) - self._locked_collateral[token]
             )
-        print(available_balances)
+
         return available_balances
 
     def _quantize_adjusted_order(self, order_candidate: OrderCandidate) -> OrderCandidate:
