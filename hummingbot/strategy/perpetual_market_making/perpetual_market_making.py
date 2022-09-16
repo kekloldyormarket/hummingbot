@@ -488,7 +488,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                                           "making may be dangerous when markets or networks are unstable.")
 
             if len(session_positions) <= 1:
-                self._order_refresh_time = 2
+                self._order_refresh_time = 20
                 self._exit_orders = dict()  # Empty list of exit order at this point to reduce size
                 proposal = None
                 if self._create_timestamp <= self.current_timestamp:
@@ -511,7 +511,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                 self._ts_peak_ask_price = market.get_price(self.trading_pair, False)
                 self._ts_peak_bid_price = market.get_price(self.trading_pair, True)
             else:
-                self._order_refresh_time = 10
+                self._order_refresh_time = 60
                 self._exit_orders = dict()  # Empty list of exit order at this point to reduce size
                 proposal = None
                 if self._create_timestamp <= self.current_timestamp:
@@ -522,14 +522,14 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                     # 3. Apply functions that modify orders price
                     self.apply_order_price_modifiers(proposal)
                     # 4. Apply budget constraint, i.e. can't buy/sell more than what you have.
-                    self.apply_budget_constraint(proposal)
+                    #self.apply_budget_constraint(proposal)
 
                     self.filter_out_takers(proposal)
 
                 self.cancel_active_orders(proposal)
                 self.cancel_orders_below_min_spread()
-                #if self.to_create_orders(proposal):
-                    #self.execute_orders_proposal(proposal, PositionAction.CLOSE)
+                if self.to_create_orders(proposal):
+                    self.execute_orders_proposal(proposal, PositionAction.CLOSE)
                 # Reset peak ask and bid prices
                 self._ts_peak_ask_price = market.get_price(self.trading_pair, False)
                 self._ts_peak_bid_price = market.get_price(self.trading_pair, True)
