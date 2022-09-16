@@ -487,7 +487,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                     self.logger().warning("WARNING: Some markets are not connected or are down at the moment. Market "
                                           "making may be dangerous when markets or networks are unstable.")
 
-            if len(session_positions) <= 1:
+            if len(session_positions) <= 0:
                 self._order_refresh_time = 5
                 self._exit_orders = dict()  # Empty list of exit order at this point to reduce size
                 proposal = None
