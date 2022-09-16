@@ -528,7 +528,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
 
                 self.cancel_active_orders(proposal)
                 self.cancel_orders_below_min_spread()
-                if self.to_create_orders(proposal):
+                #if self.to_create_orders(proposal):
                     #self.execute_orders_proposal(proposal, PositionAction.CLOSE)
                 # Reset peak ask and bid prices
                 self._ts_peak_ask_price = market.get_price(self.trading_pair, False)
