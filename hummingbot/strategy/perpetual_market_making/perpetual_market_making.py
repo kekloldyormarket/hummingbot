@@ -324,10 +324,10 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
 
     def perpetual_mm_assets_df(self) -> pd.DataFrame:
         market, trading_pair, base_asset, quote_asset = self._market_info
-        quote_balance = float(market.get_balance(quote_asset))
-        available_quote_balance = float(market.get_available_balance(quote_asset))
+        quote_balance = float(market.get_balance('USDT'))
+        available_quote_balance = float(market.get_available_balance('USDT'))
         data = [
-            ["", quote_asset],
+            ["", 'USDT'],
             ["Total Balance", round(quote_balance, 4)],
             ["Available Balance", round(available_quote_balance, 4)]
         ]
@@ -718,7 +718,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
         checker = self._market_info.market.budget_checker
 
         order_candidates = self.create_order_candidates_for_budget_check(proposal)
-        adjusted_candidates = checker.adjust_candidates(order_candidates, all_or_none=True)
+        adjusted_candidates = checker.adjust_candidates(order_candidates, all_or_none=False)
         self.apply_adjusted_order_candidates_to_proposal(adjusted_candidates, proposal)
 
     def create_order_candidates_for_budget_check(self, proposal: Proposal):
