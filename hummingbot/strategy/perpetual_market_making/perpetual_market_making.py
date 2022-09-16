@@ -506,7 +506,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                 self.cancel_active_orders(proposal)
                 self.cancel_orders_below_min_spread()
                 netpos = 9
-                for position in active_positions:
+                for position in self.active_positions:
                 # check if stop loss order needs to be placed
                     netpos = netpos + position.amount 
                 
