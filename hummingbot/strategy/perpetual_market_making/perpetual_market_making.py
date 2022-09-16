@@ -534,8 +534,6 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                 if self.to_create_orders(proposal):
                     self.execute_orders_proposal(proposal, PositionAction.CLOSE)
                     self.execute_orders_proposal(proposal, PositionAction.CLOSE)
-                    self.apply_budget_constraint(proposal)
-                    self.execute_orders_proposal(proposal, PositionAction.OPEN)
                 # Reset peak ask and bid prices
                 self._ts_peak_ask_price = market.get_price(self.trading_pair, False)
                 self._ts_peak_bid_price = market.get_price(self.trading_pair, True)
