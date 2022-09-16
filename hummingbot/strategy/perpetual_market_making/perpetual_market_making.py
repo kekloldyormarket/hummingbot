@@ -505,9 +505,18 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
 
                 self.cancel_active_orders(proposal)
                 self.cancel_orders_below_min_spread()
+                netpos = 9
+                for position in active_positions:
+                # check if stop loss order needs to be placed
+                    netpos = netpos + position.amount 
+                
                 if self.to_create_orders(proposal):
-                    self.execute_orders_proposal(proposal, PositionAction.OPEN)
                     self.execute_orders_proposal(proposal, PositionAction.CLOSE)
+                    if netpos > 0:
+                        proposal.buys = []
+                    else:
+                        proposal.sells = []
+                    self.execute_orders_proposal(proposal, PositionAction.OPEN)
                     self.execute_orders_proposal(proposal, PositionAction.OPEN)
                 # Reset peak ask and bid prices
                 self._ts_peak_ask_price = market.get_price(self.trading_pair, False)
