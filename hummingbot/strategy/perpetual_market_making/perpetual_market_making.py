@@ -88,8 +88,8 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
         self._market_info = market_info
         self._leverage = leverage
         self._position_mode = PositionMode.HEDGE if position_mode == "Hedge" else PositionMode.ONEWAY
-        self._bid_spread = bid_spread
-        self._ask_spread = ask_spread
+        self._bid_spread = 0.01#bid_spread
+        self._ask_spread = 0.01#ask_spread
         self._minimum_spread = minimum_spread
         self._order_amount = order_amount
         self._long_profit_taking_spread = long_profit_taking_spread
@@ -98,7 +98,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
         self._order_levels = order_levels
         self._buy_levels = order_levels
         self._sell_levels = order_levels
-        self._order_level_spread = order_level_spread
+        self._order_level_spread = 0.005#order_level_spread
         self._order_level_amount = order_level_amount
         self._order_refresh_time = order_refresh_time
         self._order_refresh_tolerance_pct = order_refresh_tolerance_pct
@@ -506,12 +506,12 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                 self.cancel_active_orders(proposal)
                 self.cancel_orders_below_min_spread()
                 if self.to_create_orders(proposal):
-                    self.execute_orders_proposal(proposal, PositionAction.OPEN)
+                    self.execute_orders_proposal(proposal, PositionAction.CLOSE)
                 # Reset peak ask and bid prices
                 self._ts_peak_ask_price = market.get_price(self.trading_pair, False)
                 self._ts_peak_bid_price = market.get_price(self.trading_pair, True)
             else:
-                self._order_refresh_time = 10
+                self._order_refresh_time = 30
                 self._exit_orders = dict()  # Empty list of exit order at this point to reduce size
                 proposal = None
                 if self._create_timestamp <= self.current_timestamp:
