@@ -488,7 +488,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                                           "making may be dangerous when markets or networks are unstable.")
 
             if len(session_positions) <= 1:
-                self._order_refresh_time = 60
+                self._order_refresh_time = 2
                 self._exit_orders = dict()  # Empty list of exit order at this point to reduce size
                 proposal = None
                 if self._create_timestamp <= self.current_timestamp:
@@ -511,7 +511,7 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                 self._ts_peak_ask_price = market.get_price(self.trading_pair, False)
                 self._ts_peak_bid_price = market.get_price(self.trading_pair, True)
             else:
-                self._order_refresh_time = 30
+                self._order_refresh_time = 10
                 self._exit_orders = dict()  # Empty list of exit order at this point to reduce size
                 proposal = None
                 if self._create_timestamp <= self.current_timestamp:
@@ -529,11 +529,11 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                 self.cancel_active_orders(proposal)
                 self.cancel_orders_below_min_spread()
                 if self.to_create_orders(proposal):
-                    self.execute_orders_proposal(proposal, PositionAction.CLOSE)
+                    #self.execute_orders_proposal(proposal, PositionAction.CLOSE)
                 # Reset peak ask and bid prices
                 self._ts_peak_ask_price = market.get_price(self.trading_pair, False)
                 self._ts_peak_bid_price = market.get_price(self.trading_pair, True)
-                #self.manage_positions(session_positions)
+                self.manage_positions(session_positions)
         finally:
             self._last_timestamp = timestamp
 
