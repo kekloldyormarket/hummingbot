@@ -512,9 +512,9 @@ class PerpetualMarketMakingStrategy(StrategyPyBase):
                 
                 if self.to_create_orders(proposal):
                     self.execute_orders_proposal(proposal, PositionAction.CLOSE)
-                    if netpos > 0:
+                    if netpos > self._order_amount * self._order_levels:
                         proposal.buys = []
-                    else:
+                    elif netpos < -1 * self._order_amount * self._order_levels:
                         proposal.sells = []
                     self.execute_orders_proposal(proposal, PositionAction.OPEN)
                     self.execute_orders_proposal(proposal, PositionAction.OPEN)
